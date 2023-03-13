@@ -3,7 +3,6 @@ from typing import List
 from pygraphblas import Vector, Matrix, INT64, BOOL
 
 
-
 def bfs(graph: Matrix, source: int) -> List[int]:
     """
     LA BFS algorithm for given graph and start vertex

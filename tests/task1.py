@@ -23,10 +23,12 @@ from pygraphblas import Matrix
             [1, 2, 3, 4],
             0,
             [0, 1, 2, 3, 4],
-        )
+        ),
     ],
 )
 def test_bfs(I, J, start, expeted):
     nrows = ncols = max(I + J) + 1
-    graph = Matrix.from_lists(I, J, list(map(lambda x: True, I)), nrows=nrows, ncols=ncols)
+    graph = Matrix.from_lists(
+        I, J, list(map(lambda x: True, I)), nrows=nrows, ncols=ncols
+    )
     assert bfs(graph, start) == expeted
