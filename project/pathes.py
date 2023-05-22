@@ -4,6 +4,65 @@ from typing import List, Tuple, Union
 from pygraphblas import Matrix, FP64
 
 
+def sssp2(graph: Matrix, source: int) -> List[int]:
+    """
+    Single source shortest path
+
+    Parameters
+    ----------
+    graph: Matrix
+        adjacency matrix
+    source: int
+        start vertex
+    Returns
+    -------
+    result: List[int]
+        list with distances to i-vertex
+    """
+    return mssp2(graph, [source])[0][1]
+
+
+def mssp2(graph: Matrix, start_vertices: List[int]) -> List[Union[int, List[float]]]:
+    """
+    Multiple-source shortest paths
+
+    Parameters
+    ----------
+    graph: Matrix
+        adjacency matrix
+    source: List[int]
+        list of start vertices
+    Returns
+    -------
+    result: List[Tuple[int, List[int]]]
+        list of tuples (source, distances_from_source)
+    """
+    n = graph.nrows
+
+    if n == 0 or len(start_vertices) == 0:
+        return []
+
+    graph = graph.eadd(Matrix.identity(FP64, n, 0.0), FP64.MIN)
+    dists = Matrix.sparse(FP64, len(start_vertices), n)
+
+    for i, start in enumerate(start_vertices):
+        dists[i, start] = 0
+
+    for _ in range(n):
+        old = dists
+        dists = dists.mxm(graph, FP64.MIN_PLUS)
+        if old.iseq(dists):
+            return [
+                [
+                    start,
+                    [dists.get(i, col, default=math.inf) for col in range(n)],
+                ]
+                for i, start in enumerate(start_vertices)
+            ]
+
+    raise ValueError("Negative cycle")
+
+
 def sssp(graph: Matrix, source: int) -> List[int]:
     """
     Single source shortest path
