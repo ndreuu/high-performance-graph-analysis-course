@@ -72,3 +72,15 @@ def test_mssp(edges, starts, expected):
 def test_sssp(edges, start, expected):
     graph = new_matrix(edges)
     assert sssp(graph, start) == expected
+
+
+@pytest.mark.parametrize(
+    "edges, start, expected",
+    get_data(
+        "test_sssp",
+        lambda d: (d["edges"], d["start"], normilize1(d["expected"])),
+    ),
+)
+def test_sssp2(edges, start, expected):
+    graph = new_matrix(edges)
+    assert sssp2(graph, start) == expected

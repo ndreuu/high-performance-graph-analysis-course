@@ -1,4 +1,8 @@
 black
+boltons~=23.0.0
+
+networkx~=3.1
+numpy~=1.20
 pre-commit
 pygraphblas
 pytest
